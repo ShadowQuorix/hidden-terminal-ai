@@ -1,0 +1,68 @@
+
+<html>
+<body style = "background:#0b0f14;color:white;">
+<h1>Hidden Terminal Dashboard</h1>
+
+-form method="POST">
+  <input name ="target" placeholder=""Enter target">
+  <button type=""submit">Scan</button>
+  </body><form action="
+</body>
+</html>
+
+<h2>Targets</h2>
+
+<table border="1" id="targetsTable">
+<tr>
+    <th>ID</th>
+    <th>Target</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+</table>
+
+<h2>Results</h2>
+<pre id="resultsPanel" style="background:#111;color:#0f0;padding:10px;"></pre>
+
+<script>
+async function loadTargets() {
+    const res = await fetch("/api/targets");
+    const data = await res.json();
+
+    const table = document.getElementById("targetsTable");
+    table.innerHTML = `
+    <tr>
+        <th>ID</th><th>Target</th><th>Status</th><th>Action</th>
+    </tr>`;
+
+    data.forEach(t => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${t[0]}</td>
+            <td>${t[1]}</td>
+            <td>${t[2]}</td>
+            <td>
+                <button onclick="scan(${t[0]})">Scan</button>
+                <button onclick="view(${t[0]}, \`${t[3] || ""}\`)">View</button>
+            </td>
+        `;
+
+        table.appendChild(row);
+    });
+}
+
+function scan(id) {
+    fetch(`/scan/${id}`);
+}
+
+function view(id, result) {
+    document.getElementById("resultsPanel").textContent = result || "No results yet.";
+}
+
+// 🔄 AUTO REFRESH every 3 seconds
+setInterval(loadTargets, 3000);
+
+// initial load
+loadTargets();
+</script>

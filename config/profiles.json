@@ -1,0 +1,23 @@
+{
+  "fast": {
+    "modules": ["nmap"],
+    "nmap_flags": "-T4 -F",
+    "ai_detail": "low"
+  },
+  "balanced": {
+    "modules": ["nmap", "web"],
+    "nmap_flags": "-sC -sV",
+    "ai_detail": "medium"
+  },
+  "full": {
+    "modules": ["nmap", "web", "smb"],
+    "nmap_flags": "-sC -sV -p-",
+    "ai_detail": "high"
+  },
+  "oscp": {
+    "modules": ["nmap"],
+    "nmap_flags": "-sC -sV",
+    "ai_detail": "guided",
+    "hint_mode": true
+  }
+}
